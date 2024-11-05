@@ -3,8 +3,10 @@ import createClient from "openapi-fetch";
 import { paths } from "./schemas/robotoff";
 
 type InsightQuery = paths["/insights"]["get"]["parameters"]["query"];
-type InsightResponse = paths["/insights"]["get"]["responses"]["200"]["content"]["application/json"];
-type AnnotateBody = paths["/insights/annotate"]["post"]["requestBody"]["content"]["application/x-www-form-urlencoded"];
+type InsightResponse =
+  paths["/insights"]["get"]["responses"]["200"]["content"]["application/json"];
+type AnnotateBody =
+  paths["/insights/annotate"]["post"]["requestBody"]["content"]["application/x-www-form-urlencoded"];
 
 export class Robotoff {
   /** The fetch function used for every request */
@@ -21,9 +23,7 @@ export class Robotoff {
     });
   }
 
-  async annotate(
-    body: AnnotateBody,
-  ) {
+  async annotate(body: AnnotateBody) {
     return this.raw.POST("/insights/annotate", {
       body: body,
     });
@@ -50,7 +50,7 @@ export class Robotoff {
    *
    * @param {InsightQuery} query - The query object containing parameters for fetching insights.
    * @returns {Promise<InsightResponse | undefined>} A promise that resolves to the data from the insights endpoint
-   * 
+   *
    */
   async insights(query: InsightQuery): Promise<InsightResponse | undefined> {
     const result = await this.raw.GET("/insights", { params: { query } });
