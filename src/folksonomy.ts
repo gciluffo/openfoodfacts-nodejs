@@ -34,6 +34,14 @@ export class Folksonomy {
     });
   }
 
+  private checkAuthToken(message?: string) {
+    if (!this.authToken) {
+      throw new Error(
+        message || "Auth token is required to perform this action",
+      );
+    }
+  }
+
   /**
    * Get the list of keys with statistics
    *
@@ -55,11 +63,7 @@ export class Folksonomy {
   }
 
   async putTag(tag: FolksonomyTag): Promise<boolean> {
-    if (!this.authToken) {
-      throw new Error(
-        "Auth token must be provided or login method invoked to update a tag",
-      );
-    }
+    this.checkAuthToken();
 
     const res = await this.raw.PUT("/product", { body: tag });
 
@@ -89,11 +93,7 @@ export class Folksonomy {
    * @returns if the tag was added or updated
    */
   async addTag(tag: FolksonomyTag): Promise<boolean> {
-    if (!this.authToken) {
-      throw new Error(
-        "Auth token must be provided or login method invoked to add a tag",
-      );
-    }
+    this.checkAuthToken();
 
     const res = await this.raw.POST("/product", {
       body: tag,
@@ -108,11 +108,7 @@ export class Folksonomy {
    * @returns if the tag was deleted
    */
   async removeTag(tag: FolksonomyTag & { version: number }) {
-    if (!this.authToken) {
-      throw new Error(
-        "Auth token must be provided or login method invoked to remove a tag",
-      );
-    }
+    this.checkAuthToken();
 
     const res = await this.raw.DELETE("/product/{product}/{k}", {
       params: {
